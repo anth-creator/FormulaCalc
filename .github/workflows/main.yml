@@ -1,0 +1,27 @@
+name: 打包FormulaCalc APK
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 配置JDK17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: 配置Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.2'
+          
+      - name: 编译生成APK
+        run: gradle assembleDebug
+          
+      - name: 上传安装包
+        uses: actions/upload-artifact@v4
+        with:
+          name: FormulaCalc安装包
+          path: app/build/outputs/apk/debug/FormulaCalc.apk
